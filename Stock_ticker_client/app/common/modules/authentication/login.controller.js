@@ -5,9 +5,9 @@
         .module('app')
         .controller('LoginController', LoginController);
 
+    LoginController.$inject = ['AuthService', '$state', '$mdToast'];
     /* @ngInject */
-    function LoginController(AuthService, $state) {
-//        $state, auth, config, $mdToast, $filter
+    function LoginController(AuthService, $state, $mdToast) {
         var vm = this;
         
         vm.loginClick = loginClick;
@@ -23,33 +23,34 @@
             vm.isLoading = true;
             var success = AuthService.login(vm.user.username, vm.user.password, vm.user.shouldRemember);
             if(success){
-                $state.go('stock');
+                onLoginSuccess();
             }else{
-                alert("Login failed");
+                onLoginError();
             }
         }
         
         function onLoginSuccess(){                          
-            $mdToast.show({
-                template: '<md-toast class="md-toast success">' + $filter('translate')('LOGIN.MESSAGES.ACCESS_GRANTED') + '</md-toast>',
-                hideDelay: 3000,
-                position: 'top right'
-            })
-            $state.go(config.DEFAULT_STARTUP_STATE);
+            $mdToast.show(
+            $mdToast.simple()
+                .textContent('Login success')  
+                .position('bottom right')
+                .hideDelay(3000)
+            );
+            
+            $state.go('stock');
         }
         
         function onLoginError(data) {
-            this.responseError = data && data.error_description ? data.error_description :
-                $filter('translate')('LOGIN.MESSAGES.ACCESS_DENIED');
-            $mdToast.show({
-                template: '<md-toast class="md-toast error">' + this.responseError + '</md-toast>',
-                hideDelay: 3500,
-                position: 'top right'
-            })
+            $mdToast.show(
+            $mdToast.simple()
+                .textContent('Login failed')  
+                .position('bottom right')
+                .hideDelay(3000)
+            );
         }
         
         function signupClick(){
-            $state.go('authentication.signup');         
+                   
         }
     }
 })();

@@ -210,16 +210,17 @@ function createMasterTable(){
     
     var insertQuery = `
     INSERT INTO stocks (Id, Name, Price, ImageUrl) VALUES
-    (1, 'Pepsi', '234', 'http://www.beyondchocolate.co.uk/wp-content/uploads/2012/08/Diet-Coke.jpg'),
-    (2, 'Facebook', '264', 'http://static.dnaindia.com/sites/default/files/2015/05/03/333140-facbook.jpg'),
-    (3, 'Google', '438', 'https://pbs.twimg.com/profile_images/626182170575421441/rEo9xeQt.png'),
-    (4, 'Yahoo', '402', 'https://tctechcrunch2011.files.wordpress.com/2013/09/yahoo-day-2.jpg'),
-    (5, 'Jaguar', '195', 'http://s3.reutersmedia.net/resources/r/?m=02&d=20140908&t=2&i=971017924&w=644&fh=&fw=&ll=&pl=&sq=&r=LYNXMPEA870W5'),
-    (6, 'Lambogini', '447', 'http://3.bp.blogspot.com/-iupK_Ih6Vs4/TyphIB1A-nI/AAAAAAAACqs/0-5AYcWuqeI/s1600/lamborghini_logo+6.png'),
-    (7, 'Aston Martin', '352', 'http://cdn.astonmartin.com/sitefinity/heritage-navigation/Aston_logo3_1940hr.jpg'),
-    (8, 'Pizza', '126', 'http://www.boholtourismph.com/wp-content/uploads/2014/11/Pizza_Hut-logo.png'),
-    (9, 'pizza', '331', 'http://www.boholtourismph.com/wp-content/uploads/2014/11/Pizza_Hut-logo.png'),
-    (10, 'Audi', '211', 'http://pictures.topspeed.com/IMG/crop/201605/2016-audi-a3-driven_600x0w.jpg');
+    (1, 'Pepsi', '66', 'http://beverageindustrynews.com.ng/wp-content/uploads/2015/11/pepsi_logo.png'),
+    (2, 'Facebook', '60', 'http://static.dnaindia.com/sites/default/files/2015/05/03/333140-facbook.jpg'),
+    (3, 'Google', '103', 'http://4.bp.blogspot.com/-Nyfdpymc_Lo/VkQw-nJ79mI/AAAAAAAARYg/6o9VeoTvu-I/s1600-r/logo_chrome.png'),
+    (4, 'Yahoo', '336', 'https://tctechcrunch2011.files.wordpress.com/2013/09/yahoo-day-2.jpg'),
+    (5, 'Jaguar', '373', 'http://s3.reutersmedia.net/resources/r/?m=02&d=20140908&t=2&i=971017924&w=644&fh=&fw=&ll=&pl=&sq=&r=LYNXMPEA870W5'),
+    (6, 'Lambogini', '251', 'http://3.bp.blogspot.com/-iupK_Ih6Vs4/TyphIB1A-nI/AAAAAAAACqs/0-5AYcWuqeI/s1600/lamborghini_logo+6.png'),
+    (7, 'Aston Martin', '403', 'http://cdn.astonmartin.com/sitefinity/heritage-navigation/Aston_logo3_1940hr.jpg'),
+    (8, 'Pizza', '264', 'http://www.boholtourismph.com/wp-content/uploads/2014/11/Pizza_Hut-logo.png'),
+    (9, 'KFC', '113', 'https://lh4.ggpht.com/P3EHfEsC90YisBe_-LdYcrtJbr54C4_w6fD_XPdoml5o3G0u6fFRSuO9GLS6ijBL66A=w300'),
+    (10, 'Audi', '271', 'https://s-media-cache-ak0.pinimg.com/236x/79/33/cc/7933cc9786dde84d82c7bf9263a9746e.jpg'),
+    (11, 'Lambogini', '150', 'http://www.cortilepittsburgh.org/uploads/2/9/6/4/29646119/7646421.jpg');
 `
     
     var dataExist = null;

@@ -5,9 +5,9 @@
         .module('app')
         .factory('AuthService', AuthService);
     
-    AuthService.$inject = ['$rootScope', '$cookies', '$state'];
+    AuthService.$inject = ['$rootScope', '$cookies'];
     /* @ngInject */
-    function AuthService($rootScope, $cookies, $state){
+    function AuthService($rootScope, $cookies){
         
         var LOGIN_STATE = 'login';
         var USER_KEY = 'user';
@@ -23,8 +23,7 @@
             if(username=='test' && password=='test1'){
                 var store = shouldRemember ? $cookies : sessionStore();
                 setCurrentUser(username);
-                persistSession(store);
-                
+                persistSession(store);            
                 return true;
             }else{
                 return false;            

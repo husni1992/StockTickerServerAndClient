@@ -5,9 +5,9 @@
         .module('dashboard.module')
         .controller('DashboardController', DashboardController);
     
-    DashboardController.$inject = ['StockTickerService', 'DashboardService', '$rootScope', '$scope', '$state', '$mdToast'];
+    DashboardController.$inject = ['DashboardService', '$rootScope', '$scope', '$state', '$mdToast'];
     /* @ngInject */
-    function DashboardController(StockTickerService, DashboardService, $rootScope, $scope, $state, $mdToast){
+    function DashboardController(DashboardService, $rootScope, $scope, $state, $mdToast){
         var vm = this;           
         
 //        vm.selection = [];
