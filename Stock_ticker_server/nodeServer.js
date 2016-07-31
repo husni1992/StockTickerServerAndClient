@@ -4,7 +4,7 @@ var app = express();
 var router = express.Router();
 var bodyParser = require("body-parser");
 
-//Here we are configuring express to use body-parser as middle-ware.
+// tthis is used to catch the post requst
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -23,9 +23,9 @@ var connection = mysql.createConnection(connectionStringObj);
 connection.connect(function(error) {
     // callback 
     if (!!error) {
-        console.log("error connecting to db");
+        console.log("Error connecting to db");
     } else {
-        console.log("connected to: " + connectionStringObj.database);
+        console.log("Established connecttion with: " + connectionStringObj.database);
     }
 });
 
@@ -39,7 +39,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-//getallstockNames
 app.get('/getallstockNames', function(req, resp) {
     console.log("A user made a request" + req.url);
 
@@ -157,46 +156,7 @@ app.post('/addNewStock', function(req, resp) {
 
 
     }
-})
-
-app.post('/animal', function(req, res) {
-    console.log("post requst came");
-    console.log(req.body);
-    var data = {
-        name: 'Husny',
-        age: 24
-    }
-
-    res.write(JSON.stringify(data));
-    res.end();
-})
-
-
-app.get('/fetch', function(req, resp) {
-
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000/');
-
-    console.log("A user made a request" + req.url);
-
-    resp.writeHeader(200, {
-        'Context-Type': 'application/json'
-    });
-
-    //about sql
-    connection.query("SELECT * FROM mySampleTaable", function(error, rows, fields) {
-        // callback
-        if (!!error) {
-            console.log("Error in query")
-        } else {
-            // parse rows
-            console.log(rows);
-            resp.write(JSON.stringify(rows));
-
-            resp.end();
-        }
-    });
-})
-
+});
 
 function createMasterTable() {
     var query = `
