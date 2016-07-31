@@ -1,0 +1,31 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        Add new product
+    </div>
+    <div class="panel-body">
+      <form name="stockForm">
+      <md-input-container class="md-block">
+        <label>Name</label>
+        <input required md-maxlength="30" name="name" required md-no-asterisk name="description" ng-model="vm.stock.Name">        
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label>Price</label>
+        <input type="number" required required name="price" md-no-asterisk name="description" ng-model="vm.stock.Price">        
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label>ImageUrl</label>
+        <input required name="imageurl" required md-no-asterisk name="description" ng-model="vm.stock.ImageUrl">        
+      </md-input-container>      
+            
+    <div>
+        <md-button class="md-raised" ng-click="vm.clearForm()">Clear</md-button>     
+        <md-button md-no-ink ng-disabled="stockForm.$invalid" ng-hide="vm.saving" class="md-raised md-primary" ng-click="vm.addProduct()">Save</md-button>
+        <span style="margin-left: 10px">
+            <md-progress-circular ng-show="vm.saving" md-diameter="30"></md-progress-circular>
+        </span>
+    </div>         
+                  
+    </form>
+    </div>
+</div>
+

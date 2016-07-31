@@ -1,0 +1,23 @@
+{
+  "name": "stock_ticker",
+  "version": "1.0.0",
+  "description": "A live stock ticker build in Angular",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/husni1992/stock_ticker.git"
+  },
+  "author": "M.G.Husny Ahamed (CodeWizarder)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/husni1992/stock_ticker/issues"
+  },
+  "homepage": "https://github.com/husni1992/stock_ticker#readme",
+  "dependencies": {
+    "browser-sync": "^2.13.0",
+    "gulp": "^3.9.1"
+  }
+}

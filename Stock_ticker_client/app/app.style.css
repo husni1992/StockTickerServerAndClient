@@ -1,0 +1,84 @@
+body{
+    font-family: verdana;
+/*    background-color: #48A1B6;*/
+}
+
+.navbar{
+  border-radius: 0px;
+    margin-bottom: 40px;
+}
+
+.switchdemoBasicUsage .inset {
+  padding-left: 25px;
+  padding-top: 25px; }
+
+.col-md-2{
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.img-dashbord{
+    min-height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 3px;
+    width: 50px; 
+    height: 50x
+}
+
+.stock-price-div{
+    margin-top: 10px;
+    background-color: #efefef;
+    height: 74px;
+    width: 100%;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.percentage-text{
+    right: 65px; 
+    position: absolute; 
+    margin-top: 6px;
+}
+
+.redTicker{
+    color: red;
+}
+
+.greenTicker{
+    color: green;    
+}
+
+.arrow{
+    font-size: 17px;
+    float: left;
+    padding-top: 3px;
+    margin-right: 5px;
+}
+
+.percentage{
+    float: left;    
+}
+
+.stock-thumbnail{
+    padding: 0px;
+    height: 200px; 
+    border: 2px solid rgba(119, 119, 119, 0.48);;
+    padding-top: 12px;
+}
+
+.arrow-icon{
+    font-size: 14px;
+    padding-top: 3px;
+    margin-right: 6px;
+}
+
+.stock-preference-list{
+    margin: 30px;
+}
+
+.no-stocks-live{
+    height: 25px;
+    border-radius: 5px;
+    text-align: center;
+    padding: 3px;
+}

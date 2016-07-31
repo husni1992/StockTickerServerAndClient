@@ -1,0 +1,14 @@
+<!--<button class="btn btn-primary" ng-click="vm.getLiveStockUpdates()">Get live data</button>   -->
+<div ng-if="vm.stocksList.length<1">
+    <p class="bg-danger no-stocks-live">
+        Please select your favourite stocks in Dashboard to get updates
+    </p>
+</div>
+
+<div class="row row-centered" ng-cloak>
+    <div class="col-md-2" ng-repeat="item in vm.stocksList">
+         <my-customer item="item"></my-customer>
+    </div>
+</div>
+
+

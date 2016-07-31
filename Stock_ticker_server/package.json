@@ -1,0 +1,28 @@
+{
+  "name": "stockticker_server",
+  "version": "1.0.0",
+  "description": "A simple node server for getting live stock updates. DB is mysql",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/husni1992/stock_ticker_node_server.git"
+  },
+  "author": "M.G.Husny Ahamed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/husni1992/stock_ticker_node_server/issues"
+  },
+  "homepage": "https://github.com/husni1992/stock_ticker_node_server#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "gulp": "^3.9.1",
+    "gulp-exec": "^2.1.2",
+    "gulp-nodemon": "^2.1.0",
+    "mysql": "^2.11.1"
+  }
+}
