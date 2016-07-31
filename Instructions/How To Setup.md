@@ -19,7 +19,7 @@ iii. After completing package install, type in 'gulp serve'. This will run the n
 4) Install and run StockTicker Client Application:
 --------------------------------------------------
 i. Goto stock_ticker_client folder.
-ii. Open command window and type in 'npm install' and hit enter. This will install all the needed node packages for the application.
+ii. Open command window and type in 'npm install' and hit enter and wait till it completes. This will install all the needed node packages for the application.
 iii. Now you are all setup. Just goto stock_ticker_client folder and run 'gulp start' in command window. And the app will run and open in browser.
 
 Note: gulp task runner will watch for any changes made in the application and render in the browser automatically.
