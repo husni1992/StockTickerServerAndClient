@@ -3,6 +3,10 @@ body{
 /*    background-color: #48A1B6;*/
 }
 
+.navbar-font{
+    font-weight: 700;
+}
+
 .navbar{
   border-radius: 0px;
     margin-bottom: 40px;
