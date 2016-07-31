@@ -27,10 +27,6 @@
             }else{
                 alert("Login failed");
             }
-//                .then(onLoginSuccess.bind(this), onLoginError.bind(this))
-//                .finally(function(){                   
-//                    vm.isLoading = false
-//                })
         }
         
         function onLoginSuccess(){                          

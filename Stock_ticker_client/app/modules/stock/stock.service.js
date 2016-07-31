@@ -5,20 +5,19 @@
         .module('stock.module')
         .factory('StockService', StockService);
     
-    StockService.$inject = ['LocalStorageService', 'StockResource', 'StockTickerService'];
+    StockService.$inject = ['StockResource'];
     /* @ngInject */
-    function StockService(LocalStorageService, StockResource, StockTickerService){
+    function StockService(StockResource){
         var service = {
-            getMyStocks: getMyStocks,
-            getData: getData,
-            setData: setData
-        }        
+            getMyStocks: getMyStocks
+        };        
         
         function getMyStocks(selections){
-//            var myStocksResource = StockResource.post(favouriteStockListIDs).$promise;
             var myStocksResource = StockResource.getAllStocks(selections).$promise;
             return myStocksResource;
         }
+        
+        return service;
         
 //        function getMyStocks(){
 //            
@@ -41,15 +40,6 @@
 //            
 //            return favouriteStocks;
 //        }
-        
-        function getData(){
-            
-        };
-        
-        function setData(){
-            
-        };
-        
-        return service;
+       
     }
 })();

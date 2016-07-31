@@ -8,6 +8,7 @@
             stockUpdateFrequency: 2,
             stockUpdateCountBeforeInterval: 5,
             stokUpdateInterval: 5,
+            stop_live_update_on_leaving_live_view: false,
             work_offline: false
         })
     

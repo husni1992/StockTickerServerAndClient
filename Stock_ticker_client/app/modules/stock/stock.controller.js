@@ -22,7 +22,7 @@
         }
 
         function getLiveStockUpdates() {
-            StockResource.getLiveStockUpdates({
+                StockResource.getLiveStockUpdates({
                     selectedList: stringSelections
                 }).$promise
                 .then(function(data) {

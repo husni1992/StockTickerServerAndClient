@@ -43,7 +43,7 @@
             freeAccess: true
         })
         
-        $urlRouterProvider.otherwise('/stock')
+        $urlRouterProvider.otherwise('/dashboard')
     }
     
 })();
