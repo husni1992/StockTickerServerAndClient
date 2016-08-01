@@ -5,22 +5,10 @@
   </div>
   <div class="caption stock-price-div">   
     <div ng-if="!showVariation || rising==true" class="greenTicker" style="text-align: center">
-<!--
-        <span ng-if="showVariation">
-            <span ng-if="rising==true">+</span>
-            <span ng-if="rising==false">-</span>
-        </span>        
--->
         {{item.Price | currency}}
     </div>
     
     <div ng-if="showVariation && rising==false" class="redTicker" style="text-align: center">
-<!--
-        <span ng-if="showVariation">
-            <span ng-if="rising==true">+</span>
-            <span ng-if="rising==false">-</span>
-        </span>        
--->
         {{item.Price | currency}}
     </div>
     
