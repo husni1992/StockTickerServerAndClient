@@ -31,20 +31,11 @@
             }
             
             scope.$watch('item.Price', function(newValue, oldValue) {
-                if (newValue)
-                    scope.showVariation = newValue != oldValue;
+                if (newValue != oldValue){
+                    scope.showVariation = true;
                     scope.rising = newValue > oldValue ? true : false;
-                
-                
-                scope.percentage = newValue > oldValue ? (((newValue - oldValue)/oldValue) * 100) : (((oldValue - newValue)/newValue) * 100);
-                    
-//                if(newValue>oldValue){
-//                    scope.percentage = (((newValue - oldValue)/oldValue) * 100);
-//                }else{
-//                    scope.percentage = (((oldValue - newValue)/oldValue) * 100);
-//                }
-                
-                    
+                    scope.percentage = newValue > oldValue ? (((newValue - oldValue)/oldValue) * 100) : (((oldValue - newValue)/oldValue) * 100);                 
+                }
             });
         }
         

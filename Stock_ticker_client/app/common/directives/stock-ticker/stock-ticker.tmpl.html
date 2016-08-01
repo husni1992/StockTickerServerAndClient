@@ -5,31 +5,41 @@
   </div>
   <div class="caption stock-price-div">   
     <div ng-if="!showVariation || rising==true" class="greenTicker" style="text-align: center">
+<!--
         <span ng-if="showVariation">
             <span ng-if="rising==true">+</span>
             <span ng-if="rising==false">-</span>
         </span>        
+-->
         {{item.Price | currency}}
     </div>
     
     <div ng-if="showVariation && rising==false" class="redTicker" style="text-align: center">
+<!--
         <span ng-if="showVariation">
             <span ng-if="rising==true">+</span>
             <span ng-if="rising==false">-</span>
         </span>        
+-->
         {{item.Price | currency}}
     </div>
     
     <div ng-if="showVariation">
         <div ng-if="rising==true" class="greenTicker" style="text-align: center">
-            <div class="percentage-text">{{percentage | number:2}} %</div>
+            <div class="percentage-text">
+                <span ng-if="rising==true">+</span>
+                <span ng-if="rising==false">-</span>
+            {{percentage | number:2}} %</div>
             <div ng-if="showVariation" style="float:right; position:absolute; right: 40; margin-top: 5px; padding-bottom:4px">
                 <span class="glyphicon glyphicon-arrow-up arrow-icon" aria-hidden="true"></span>
             </div>                    
         </div>
 
         <div ng-if="rising==false" class="redTicker" style="text-align: center">
-            <div class="percentage-text">{{percentage | number:2}} %</div>
+            <div class="percentage-text">
+                <span ng-if="rising==true">+</span>
+                <span ng-if="rising==false">-</span>
+            {{percentage | number:2}} %</div>
             <div ng-if="showVariation" style="float:right; position:absolute; margin-top: 5px; right: 40; padding-bottom:4px">
                 <span class="glyphicon glyphicon-arrow-down arrow-icon" aria-hidden="true"></span>
             </div>                     
