@@ -13,27 +13,65 @@
         vm.stocksList = [];
         var selections = null;
         var stringSelections = null;
-        var int20;
+        var updateTimer;
         vm.getStockData = getStockData;
         init();
 
         function init() {
             getStockData();
         }
+        
+        // Get all feields of the selected stocks from node server (Id, Name, ImageUrl, Price)
+        function getStockData() {
+            selections = LocalStorageService.getPreferences();
+            stringSelections = selections.toString();
+            if (selections.length > 0) {
+                StockService.getMyStocks({
+                        selectedList: stringSelections
+                    })
+                    .then(function(data) {
+                        vm.stocksList = data;
+                        if(data.length == 0){
+                            $mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Selected stocks are not found in database')  
+                                .position('bottom right')
+                                .hideDelay(3000)
+                            );
+                        }
+                    }, function(error) {
+//                        console.info('error: ' + error);
+                        $mdToast.show(
+                         $mdToast.simple()
+                            .textContent('Error fetching data. please contact admin!')  
+                            .position('bottom right')
+                            .hideDelay(3000)
+                        );
+                    }).finally(function() {
 
+                    });
+            }
+        }
+        var errorCount = 0;
+        // Get only Id,Price of the selected stocks from node server
         function getLiveStockUpdates() {
+                
                 StockResource.getLiveStockUpdates({
                     selectedList: stringSelections
                 }).$promise
                 .then(function(data) {
+                    errorCount = 0;
                     updateDirectives(data);
                 }, function(error) {
-                     $mdToast.show(
-                        $mdToast.simple()
-                            .textContent('Server went down')  
-                            .position('bottom right')
-                            .hideDelay(3000)
-                        );
+                     if(errorCount == 0){
+                         $mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Server went down')  
+                                .position('bottom right')
+                                .hideDelay(3000)
+                            );
+                         errorCount = 1;
+                     }
                 }).finally(function() {
 
                 });
@@ -66,50 +104,19 @@
 
         function start() {
             var count = 0;
-            //                updateStock();
-            int20 = setInterval(function() {
+            //updateStock(); to call livestockupdate on start
+            updateTimer = setInterval(function() {
                 count++;
                 getLiveStockUpdates();
                 if (count == config.stockUpdateCountBeforeInterval) {
-                    clearInterval(int20);
+                    clearInterval(updateTimer);
                     setTimeout(start, config.stokUpdateInterval * 1000);
                 }
             }, config.stockUpdateFrequency * 1000);
-        }
-
-        function getStockData() {
-            selections = LocalStorageService.getPreferences();
-            stringSelections = selections.toString();
-            if (selections.length > 0) {
-                StockService.getMyStocks({
-                        selectedList: stringSelections
-                    })
-                    .then(function(data) {
-                        vm.stocksList = data;
-                        if(data.length == 0){
-                            $mdToast.show(
-                            $mdToast.simple()
-                                .textContent('No stocks found in database.')  
-                                .position('bottom right')
-                                .hideDelay(3000)
-                            );
-                        }
-                    }, function(error) {
-//                        console.info('error: ' + error);
-                        $mdToast.show(
-                         $mdToast.simple()
-                            .textContent('Error fetching data. please contact admin!')  
-                            .position('bottom right')
-                            .hideDelay(3000)
-                        );
-                    }).finally(function() {
-
-                    });
-            }
-        }
+        }        
 
         $scope.$on('$destroy', function() {
-            clearInterval(int20);
+            clearInterval(updateTimer);
         });
                 
     }

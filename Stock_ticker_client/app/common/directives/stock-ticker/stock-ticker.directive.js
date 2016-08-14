@@ -3,14 +3,14 @@
 //    ss
     angular
         .module('app')
-        .directive('myCustomer', function(config, StockResource) {
+        .directive('stockTickerDirective', function(config, StockResource) {
           return {
               restrict: 'E',
               replace: true,
               scope: {
                   item: '='
               },
-              templateUrl: 'app/common/directives/stock-ticker/stock-ticker.tmpl.html',
+              templateUrl: 'app/common/directives/stock-ticker/stock-ticker.directive.html',
               link: link
           };
         
@@ -20,15 +20,15 @@
             var stockMaxValue = 500;
             scope.rising = true;
             
-            function getRandomNumber(){
-                return Math.floor(Math.random() * stockMaxValue) + stockMinValue
-            }                                                
-                                    
-            function updateStock(){
-                scope.item.Price = getRandomNumber();
-                scope.$apply();
-                console.info(new Date().toLocaleTimeString() + ' Publishing stocks...' )
-            }
+//            function getRandomNumber(){
+//                return Math.floor(Math.random() * stockMaxValue) + stockMinValue
+//            }                                                
+//                                    
+//            function updateStock(){
+//                scope.item.Price = getRandomNumber();
+//                scope.$apply();
+//                console.info(new Date().toLocaleTimeString() + ' Publishing stocks...' )
+//            }
             
             scope.$watch('item.Price', function(newValue, oldValue) {
                 if (newValue != oldValue){

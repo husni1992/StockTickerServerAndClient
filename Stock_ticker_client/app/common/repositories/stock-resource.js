@@ -10,7 +10,6 @@
             {         
                 'getAllStocks': { method: 'GET', url: apiUrl + "/getallstocks", isArray: true},
                 'getLiveStockUpdates': { method: 'GET', url: apiUrl + "/getLiveStockUpdates", isArray: true},
-                'getStockNameList': { method: 'GET', url: apiUrl + "/getallstockNames", isArray: true, cache : true},
                 'addNewStock': { method: 'POST', url: apiUrl + "/addnewstock"}
             }
         );

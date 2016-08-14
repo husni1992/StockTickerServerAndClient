@@ -4,24 +4,23 @@ var app = express();
 var router = express.Router();
 var bodyParser = require("body-parser");
 
-// tthis is used to catch the post requst
+// this is used to catch data from the post requst
 app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
 
 var connectionStringObj = {
-    // properties......
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'stockticker'
+    database: 'stocktickerDb'
 }
 
-var connection = mysql.createConnection(connectionStringObj);
+var dbConnection = mysql.createConnection(connectionStringObj);
 
-connection.connect(function(error) {
-    // callback 
+dbConnection.connect(function(error) {
+    console.log("Estqablishing connection with: " + connectionStringObj.database);
     if (!!error) {
         console.log("Error connecting to db");
     } else {
@@ -31,36 +30,18 @@ connection.connect(function(error) {
 
 app.listen(1335);
 console.log("Server running");
-createMasterTable();
+seedStockTable();
 
+// access control --> allowed all origin
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With,     Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
-app.get('/getallstockNames', function(req, resp) {
-    console.log("A user made a request" + req.url);
-
-    connection.query("SELECT ID,Name FROM stockTicker2", function(error, rows, fields) {
-        // callback
-        if (!!error) {
-            console.log("some error");
-            resp.write("Error x in query");
-        } else {
-            // parse rows
-            console.log("Data retrieved from stockTicker2");
-            resp.write(JSON.stringify(rows));
-
-            resp.end();
-        }
-    });
-
-})
-
-app.get('/getLiveStockUpdates', function(req, resp) {
-    console.log("Live update requested");
-    var res = null;
+app.get('/getLiveStockUpdates', function(req, res) {
+    console.log("Get: " + req.url);
+    
     var querylist = null;
     if (req.query.selectedList) {
         querylist = req.query.selectedList;
@@ -73,126 +54,112 @@ app.get('/getLiveStockUpdates', function(req, resp) {
         sqlQuery = "SELECT Id, Price FROM stocks WHERE Id IN (" + querylist + ") ";
     }
 
-    connection.query(sqlQuery, function(error, rows, fields) {
-        // callback
+    dbConnection.query(sqlQuery, function(error, rows, fields) {        
         if (!!error) {
             console.log(sqlQuery);
-            resp.write(error);
-            resp.end();
+            res.write(error);
+            res.end();
         } else {
             // parse rows
             console.log(sqlQuery);
             console.log("Live update sent");
-            resp.write(JSON.stringify(rows));
-
-            resp.end();
+            
+            res.write(JSON.stringify(rows));
+            res.end();
         }
     });
 })
 
-app.get('/getallstocks', function(req, resp) {
-    console.log("A user made a request" + req.url);
-    var res = null;
+app.get('/getallstocks', function(req, res) {
+    console.log("Get request recieved: " + req.url);
+
     var querylist = null;
     if (req.query.selectedList) {
         querylist = req.query.selectedList;
-        res = querylist.split(",");
-        console.log("Parameter length : " + res.length);
+        
+        var selectedListArray = querylist.split(",");
+        console.log("Parameter length : " + selectedListArray.length);
     }
 
-    var sqlQuery = null;
+    var selectFromStocksQuery = null;
 
     if (querylist) {
-        sqlQuery = "SELECT * FROM stocks WHERE Id IN (" + querylist + ") ";
+        selectFromStocksQuery = "SELECT * FROM stocks WHERE Id IN (" + querylist + ") ";
     } else {
-        sqlQuery = "SELECT * FROM stocks";
+        selectFromStocksQuery = "SELECT * FROM stocks";
     }
 
-    connection.query(sqlQuery, function(error, rows, fields) {
+    dbConnection.query(selectFromStocksQuery, function(error, rows, fields) {
         // callback
         if (!!error) {
             console.log("some error");
 
-            resp.write("Error x in query");
+            res.write("Error x in query");
         } else {
             // parse rows
-            console.log(sqlQuery);
-            resp.write(JSON.stringify(rows));
+            console.log(selectFromStocksQuery);
+            res.write(JSON.stringify(rows));
 
-            resp.end();
+            res.end();
         }
     });
 
 })
 
-app.post('/addNewStock', function(req, resp) {
-    console.log("addNewStock post requst came");
-    console.log(req.body);
+app.post('/addNewStock', function(req, res) {
+    
+    console.log("Post request recieved: " + req.url);
+//    console.log(req.body);
 
     if (req.body.Name) {
         var name = req.body.Name,
             Price = req.body.Price,
             ImageUrl = req.body.ImageUrl;
 
-        var sqlQuery = null;
+        var insertIntoStocksQuery = "INSERT INTO stocks (Name,Price,ImageUrl) VALUES ('" + name + "','" + Price + "','" + ImageUrl + "')";
 
-        sqlQuery = "INSERT INTO stocks (Name,Price,ImageUrl) VALUES ('" + name + "','" + Price + "','" + ImageUrl + "')";
-
-        connection.query(sqlQuery, function(error, rows, fields) {
-            // callback
+        dbConnection.query(insertIntoStocksQuery, function(error, rows, fields) {
             if (!!error) {
                 console.log("some error");
 
-                resp.write("Error x in query");
+                res.write("Some error in addNewStock query");
             } else {
                 // parse rows
-                console.log(sqlQuery);
-                resp.write(JSON.stringify(rows));
+                console.log(insertIntoStocksQuery);
+                res.write(JSON.stringify(rows));
 
-                resp.end();
+                res.end();
             }
         });
-
 
 
     }
 });
 
-function createMasterTable() {
-    var query = `
-        CREATE TABLE stockTicker
-        (
-            Id int NOT NULL AUTO_INCREMENT,
-            Name varchar(255) NOT NULL,
-            Price varchar(255),
-            ImageUrl varchar(300),
-            PRIMARY KEY (ID)
-        )    
-    `
+function seedStockTable() {
 
     var checkIfDataExistInTable = `select count(*) AS namesCount from stocks`;
 
-    var insertQuery = `
-    INSERT INTO stocks (Id, Name, Price, ImageUrl) VALUES
-    (1, 'Pepsi', '66', 'http://beverageindustrynews.com.ng/wp-content/uploads/2015/11/pepsi_logo.png'),
-    (2, 'Facebook', '60', 'http://static.dnaindia.com/sites/default/files/2015/05/03/333140-facbook.jpg'),
-    (3, 'Google', '103', 'http://4.bp.blogspot.com/-Nyfdpymc_Lo/VkQw-nJ79mI/AAAAAAAARYg/6o9VeoTvu-I/s1600-r/logo_chrome.png'),
-    (4, 'Yahoo', '336', 'https://tctechcrunch2011.files.wordpress.com/2013/09/yahoo-day-2.jpg'),
-    (5, 'Jaguar', '373', 'http://s3.reutersmedia.net/resources/r/?m=02&d=20140908&t=2&i=971017924&w=644&fh=&fw=&ll=&pl=&sq=&r=LYNXMPEA870W5'),
-    (6, 'Lambogini', '251', 'http://3.bp.blogspot.com/-iupK_Ih6Vs4/TyphIB1A-nI/AAAAAAAACqs/0-5AYcWuqeI/s1600/lamborghini_logo+6.png'),
-    (7, 'Aston Martin', '403', 'http://cdn.astonmartin.com/sitefinity/heritage-navigation/Aston_logo3_1940hr.jpg'),
-    (8, 'Pizza', '264', 'http://www.boholtourismph.com/wp-content/uploads/2014/11/Pizza_Hut-logo.png'),
-    (9, 'KFC', '113', 'https://lh4.ggpht.com/P3EHfEsC90YisBe_-LdYcrtJbr54C4_w6fD_XPdoml5o3G0u6fFRSuO9GLS6ijBL66A=w300'),
-    (10, 'Audi', '271', 'https://s-media-cache-ak0.pinimg.com/236x/79/33/cc/7933cc9786dde84d82c7bf9263a9746e.jpg'),
-    (11, 'Lambogini', '150', 'http://www.cortilepittsburgh.org/uploads/2/9/6/4/29646119/7646421.jpg');
-`
+    var insertStocksQuery = `
+        INSERT INTO stocks (Id, Name, Price, ImageUrl) VALUES
+        (1, 'Pepsi', '66', 'http://beverageindustrynews.com.ng/wp-content/uploads/2015/11/pepsi_logo.png'),
+        (2, 'Facebook', '60', 'http://static.dnaindia.com/sites/default/files/2015/05/03/333140-facbook.jpg'),
+        (3, 'Google', '103', 'http://4.bp.blogspot.com/-Nyfdpymc_Lo/VkQw-nJ79mI/AAAAAAAARYg/6o9VeoTvu-I/s1600-r/logo_chrome.png'),
+        (4, 'Yahoo', '336', 'https://tctechcrunch2011.files.wordpress.com/2013/09/yahoo-day-2.jpg'),
+        (5, 'Jaguar', '373', 'http://s3.reutersmedia.net/resources/r/?m=02&d=20140908&t=2&i=971017924&w=644&fh=&fw=&ll=&pl=&sq=&r=LYNXMPEA870W5'),
+        (6, 'Lambogini', '251', 'http://3.bp.blogspot.com/-iupK_Ih6Vs4/TyphIB1A-nI/AAAAAAAACqs/0-5AYcWuqeI/s1600/lamborghini_logo+6.png'),
+        (7, 'Aston Martin', '403', 'http://cdn.astonmartin.com/sitefinity/heritage-navigation/Aston_logo3_1940hr.jpg'),
+        (8, 'Pizza', '264', 'http://www.boholtourismph.com/wp-content/uploads/2014/11/Pizza_Hut-logo.png'),
+        (9, 'KFC', '113', 'https://lh4.ggpht.com/P3EHfEsC90YisBe_-LdYcrtJbr54C4_w6fD_XPdoml5o3G0u6fFRSuO9GLS6ijBL66A=w300'),
+        (10, 'Audi', '271', 'https://s-media-cache-ak0.pinimg.com/236x/79/33/cc/7933cc9786dde84d82c7bf9263a9746e.jpg')
+    `
 
     var dataExist = null;
     var rowCount = null;
-    connection.query(checkIfDataExistInTable, function(error, rows, fields) {
+    dbConnection.query(checkIfDataExistInTable, function(error, rows, fields) {
         // callback
         if (!!error) {
-            console.log("Error in getting count")
+            console.log("Error getting count")
         } else {
             rowCount = rows[0].namesCount;
 
@@ -206,13 +173,13 @@ function createMasterTable() {
     })
 
     function insertStockTableData() {
-        connection.query(insertQuery, function(error, rows, fields) {
+        dbConnection.query(insertStocksQuery, function(error, rows, fields) {
             // callback
             if (!!error) {
-                console.log("Error in Insert to createTable")
+                console.log("Error inserting data to stocks table")
             } else {
                 // parse rows
-                console.log("INSERT INTO stockTicker success");
+                console.log("Succesfully inserted data into stocks table");
             }
         })
     }

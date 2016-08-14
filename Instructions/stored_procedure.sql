@@ -6,16 +6,16 @@
 -- --------------------------------------------------------
 
 -- Dumping database structure for stockticker
-CREATE DATABASE IF NOT EXISTS `stockticker` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `stockticker`;
+CREATE DATABASE IF NOT EXISTS `stocktickerDb` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `stocktickerDb`;
 
 
--- Dumping structure for event stockticker.myevent
+-- Dumping structure for event stocktickerDb.myevent
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` EVENT `myevent` ON SCHEDULE EVERY 1 SECOND STARTS '2016-07-29 01:50:11' ON COMPLETION PRESERVE ENABLE DO CALL proc_stock_prices()//
 DELIMITER ;
 
--- Dumping structure for procedure stockticker.proc_stock_prices
+-- Dumping structure for procedure stocktickerDb.proc_stock_prices
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_stock_prices`()
 BEGIN
