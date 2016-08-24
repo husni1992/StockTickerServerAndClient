@@ -13,7 +13,8 @@
         vm.stocksList = [];
         var selections = null;
         var stringSelections = null;
-        var updateTimer;
+        var updateTimer = null;
+        var initialRun = null;
         vm.getStockData = getStockData;
         init();
 
@@ -26,21 +27,20 @@
             selections = LocalStorageService.getPreferences();
             stringSelections = selections.toString();
             if (selections.length > 0) {
-                StockService.getMyStocks({
+                StockService.getMyFavoriteStocks({
                         selectedList: stringSelections
                     })
                     .then(function(data) {
                         vm.stocksList = data;
-                        if(data.length == 0){
+                        if(data.length == 0){      
                             $mdToast.show(
-                            $mdToast.simple()
-                                .textContent('Selected stocks are not found in database')  
-                                .position('bottom right')
-                                .hideDelay(3000)
-                            );
+                                $mdToast.simple()
+                                    .textContent('Selected stocks are not found in database')  
+                                    .position('bottom right')
+                                    .hideDelay(3000)
+                                );
                         }
                     }, function(error) {
-//                        console.info('error: ' + error);
                         $mdToast.show(
                          $mdToast.simple()
                             .textContent('Error fetching data. please contact admin!')  
@@ -52,6 +52,7 @@
                     });
             }
         }
+        
         var errorCount = 0;
         // Get only Id,Price of the selected stocks from node server
         function getLiveStockUpdates() {
@@ -78,7 +79,6 @@
         }
 
         function updateDirectives(liveData) {
-
             liveData.forEach(function(data) {
                 vm.stocksList.forEach(function(x) {
                     if (x.Id == data.Id) {
@@ -91,32 +91,39 @@
             }
         }
 
-        var initialRun = setInterval(function() {
-            if (vm.stocksList.length > 0) {
-                getLiveStockUpdates();
-                clearInterval(initialRun);
-                start();
-            } else {
-                clearInterval(initialRun);
-            }
-        }, 1000);
-
-
-        function start() {
-            var count = 0;
-            //updateStock(); to call livestockupdate on start
-            updateTimer = setInterval(function() {
-                count++;
-                getLiveStockUpdates();
-                if (count == config.stockUpdateCountBeforeInterval) {
-                    clearInterval(updateTimer);
-                    setTimeout(start, config.stokUpdateInterval * 1000);
+        if(!initialRun){
+            initialRun = setInterval(function() {
+                if (vm.stocksList.length > 0) {
+                    getLiveStockUpdates();
+                    clearInterval(initialRun);
+                    startLiveUpdate();
+                } else {
+                    clearInterval(initialRun);
                 }
+            }, 1000);
+        }
+        
+        function startLiveUpdate() {
+            var count = 0;
+            //getLiveStockUpdates(); to call livestockupdate on start
+            updateTimer = setInterval(function() {
+                if(vm.stocksList.length > 0){
+                    count++;
+                    getLiveStockUpdates();
+                    if (count == config.stockUpdateCountBeforeInterval) {
+                        clearInterval(updateTimer);
+                        setTimeout(startLiveUpdate, config.stokUpdateInterval * 1000);
+                    }
+                }else{
+                    clearInterval(updateTimer);
+                }
+                
             }, config.stockUpdateFrequency * 1000);
         }        
 
         $scope.$on('$destroy', function() {
             clearInterval(updateTimer);
+            clearInterval(initialRun);
         });
                 
     }

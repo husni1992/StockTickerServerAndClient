@@ -8,7 +8,7 @@
         var apiUrl = 'http://localhost:1335';
         var Resource = $resource(apiUrl, {},
             {         
-                'getAllStocks': { method: 'GET', url: apiUrl + "/getallstocks", isArray: true},
+                'getAllStocks': { method: 'GET', url: apiUrl + "/getallstocks", isArray: true, cache: true},
                 'getLiveStockUpdates': { method: 'GET', url: apiUrl + "/getLiveStockUpdates", isArray: true},
                 'addNewStock': { method: 'POST', url: apiUrl + "/addnewstock"}
             }
